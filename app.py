@@ -20,6 +20,17 @@ def postentry():
     model.add_entry(name, message)
     return redirect("/")
 
+@app.route("/admin")
+def admin():
+    ## print the guestbook
+    return render_template("admin.html", entries=model.get_entries())
+
+@app.route("/delete", methods=["POST"])
+def delete():
+    next_id = request.form["id"]
+    model.delete_entry(next_id)
+    return redirect("/admin")
+
 if __name__=="__main__":
-    model.init()
+    model.init(app)
     app.run(debug=True)
